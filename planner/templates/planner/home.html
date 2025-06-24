@@ -1,0 +1,157 @@
+<style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .dashboard-container {
+      background: white;
+      max-width: 600px;
+      width: 100%;
+      padding: 2.5rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgb(0 0 0 / 0.1);
+    }
+    h1 {
+      margin-bottom: 1rem;
+      color: #333;
+      font-weight: 700;
+      text-align: center;
+    }
+    h2 {
+      margin-top: 0;
+      color: #3f51b5;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    h3 {
+      color: #555;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      border-bottom: 2px solid #3f51b5;
+      padding-bottom: 0.25rem;
+    }
+    ul.activities {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #444;
+    }
+    ul.activities li {
+      margin-bottom: 0.4rem;
+    }
+    p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    a {
+      color: #3f51b5;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    form.logout-form {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    form.logout-form button {
+      background-color: #e53935;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    form.logout-form button:hover {
+      background-color: #ab2a27;
+    }
+    .suggested-activity {
+      background: #e3f2fd;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .suggested-activity button {
+      margin: 0 0.5rem;
+      background-color: #3f51b5;
+      border: none;
+      padding: 0.5rem 1rem;
+      color: white;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .suggested-activity button:hover {
+      background-color: #303f9f;
+    }
+  </style>
+  
+  <div class="dashboard-container">
+    <h1>Welcome, {{ request.user.username }}!</h1>
+  
+    {% if couple %}
+  
+      <h2>Your Couple: {{ couple.user1.username }} &amp; {{ couple.user2.username }}</h2>
+  
+      {% if suggested_activity %}
+        <div class="suggested-activity">
+          <h3>This Week's Suggested Activity</h3>
+          <p><strong>{{ suggested_activity.title }}</strong></p>
+          {% if suggested_activity.description %}
+            <p>{{ suggested_activity.description }}</p>
+          {% endif %}
+          {% if suggested_activity.deadline %}
+            <p>Deadline: {{ suggested_activity.deadline }}</p>
+          {% endif %}
+  
+          <form method="post" action="{% url 'archive_activity' suggested_activity.pk %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Mark as Done</button>
+          </form>
+  
+          <form method="post" action="{% url 'postpone_activity' suggested_activity.pk %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Postpone</button>
+          </form>
+        </div>
+      {% else %}
+        <p>No suggested activity this week.</p>
+      {% endif %}
+  
+      <h3>Upcoming Activities (Pool)</h3>
+      {% if activities %}
+        <ul class="activities">
+          {% for activity in activities %}
+            <li>{{ activity.title }} — Deadline: {{ activity.deadline }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No upcoming activities yet.</p>
+      {% endif %}
+  
+      <p><a href="{% url 'add_activity' %}">Add Activity</a></p>
+      <p><a href="{% url 'activity_list' %}">See Queues</a></p>
+  
+    {% else %}
+      <p>You are not paired with a partner yet. <a href="{% url 'pair_with_partner' %}">Pair now</a></p>
+    {% endif %}
+  
+    <form method="post" action="{% url 'logout' %}" class="logout-form">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+  

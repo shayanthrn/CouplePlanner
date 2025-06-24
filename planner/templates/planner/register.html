@@ -1,0 +1,99 @@
+<style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafb;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 0;
+      margin: 0;
+      overflow-y: auto;
+    }
+    .register-container {
+      background: #fff;
+      padding: 2.5rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgb(0 0 0 / 0.1);
+      width: 100%;
+      max-width: 400px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      display: block;
+      color: #555;
+    }
+    input, select, textarea {
+      padding: 0.6rem 0.9rem;
+      border: 1.8px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #3f51b5;
+      box-shadow: 0 0 5px #3f51b5aa;
+    }
+    button {
+      background-color: #3f51b5;
+      color: white;
+      padding: 0.9rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+    }
+    button:hover {
+      background-color: #2c387e;
+    }
+    ul.messages {
+      margin-top: 1rem;
+      list-style: none;
+      padding-left: 0;
+    }
+    ul.messages li {
+      background-color: #ffdddd;
+      color: #a94442;
+      padding: 0.7rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      border: 1px solid #a94442;
+    }
+  </style>
+  
+  <div class="register-container">
+    <h2>Register</h2>
+  
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Register</button>
+    </form>
+  
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+  
