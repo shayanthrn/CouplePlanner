@@ -20,7 +20,6 @@ class Activity(models.Model):
         ('rejected', 'Rejected'),
         ('pool', 'Pool'),
         ('archived', 'Archived'),
-        ('postponed', 'Postponed'),
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='queued')
     added_by = models.ForeignKey(User, on_delete=models.CASCADE)

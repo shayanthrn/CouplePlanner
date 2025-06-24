@@ -171,8 +171,8 @@ class PostponeActivityView(LoginRequiredMixin, View):
             messages.error(request, "Not authorized.")
             return redirect('home')
 
-        activity.status = 'postponed'
-        activity.last_suggested = None  # so it can be picked again next week
+        activity.status = 'pool'
+        activity.last_suggested = None
         activity.save()
         messages.success(request, "Activity postponed. We'll suggest another one next week.")
         return redirect('home')
